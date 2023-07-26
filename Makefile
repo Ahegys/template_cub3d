@@ -38,7 +38,7 @@ MKD_MSG				= @printf "[\e[0;35m MKD \e[0m] "
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(BUILDS) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(HEADER)  $(LIBFT) -o $(NAME) -lmlx -lXext -lX11 
+	$(CC) $(CFLAGS) $(OBJS) $(HEADER)  $(LIBFT) -o $(NAME) -lmlx -lXext -lX11 -lm
 
 clean:
 	$(DEL) $(BUILDS)

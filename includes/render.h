@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "./player_word_prop.h"
 #include "./type_defs.h"
+#include <math.h>
 
 int			tracker();
 int			mouse_hook();

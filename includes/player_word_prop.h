@@ -7,9 +7,15 @@ typedef	struct s_vector
 	double	y;
 }	t_vector;
 
-typedef struct s_props {
+typedef struct s_props
+{
 	t_vector	pos;
 	t_vector	dir;
 	t_vector	plane;
 } t_props;
+
+typedef struct s_delta
+{
+
+}	t_delta;
 #endif

@@ -2,6 +2,8 @@
 #define TYPE_DEFS_H
 
 #define ESC 65037
+#define FALSE 0
+#define TRUE 1
 
 typedef struct l_img
 {
@@ -30,6 +32,7 @@ typedef struct s_window
 	char		*win_name;
 	int			height;
 	int			width;
+	int			game_map[10][10];
 	t_pos		pos;
 }	t_window;
 
