@@ -11,6 +11,7 @@ int	main(int ac, char **av)
 	self.pos.x = 0;
 	self.pos.y = 0;
 	self.pos.fov = 2;
+	self.pos.z = 0;
 	self.win_name = "GameRender";
 	printf("%s %uc\n", av[1], 199);
 	start(&self);

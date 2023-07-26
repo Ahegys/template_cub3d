@@ -1,55 +1,20 @@
 #include "../includes/render.h"
 
-static void draw_cube(t_window *this)
+void	setup(t_window *this)
 {
-	int cube_size;
-	int center_x;
-	int center_y;
-	int x;
-	int y;
-	
-	cube_size = 30 * this->pos.fov;
-	center_x = this->width / 2;
-	center_y = this->height / 2;
 
-	x = center_x - (cube_size / 2);
-	while (x < center_x + (cube_size / 2))
-	{
-		y = center_y - (cube_size / 2);
-		while (y < center_y + (cube_size / 2))
-		{
-			pixel(this, x + this->pos.x, y + this->pos.y, 0xaaafff);
-			y++;
-		}
-		x++;
-	}
+	this->vec.pos = create_vector(5, 5);
+	this->vec.dir = create_vector(0, -1);
+	this->vec.plane = create_vector(0.66, 0);
+	
 }
 
-int	render_background(t_window *this)
+int	loop(t_window *this)
 {
-	int x;
-	int y;
-
-	x = 0;
-	while (x <= this->width)
-	{
-		y = 0;
-		while (y <= this->height)
-		{
-			pixel(this, x, y, 0x00000);
-			y++;
-		}
-		x++;
-	}
-	return (1);
-}
-
-int	render(t_window *this)
-{
-	this->pos.z = 0;
-	
 	render_background(this);
+	render_floor(this);
 	draw_cube(this);
+	create_space_camera(this);
 	mlx_clear_window(this->mlx, this->win);
 	mlx_put_image_to_window(this->mlx, this->win, this->img.img, 0, 0);
 	return (1);
@@ -64,4 +29,30 @@ int	mouse_hook()
 int	tracker()
 {
 	return (1);
+}
+
+int	check_keys(int key, t_window *this)
+{
+	if (key == XK_Escape)
+	{
+		mlx_destroy_window(this->mlx, this->win);
+		mlx_destroy_display(this->mlx);
+		free(this->mlx);
+		exit(0);
+	}
+	else if (key == XK_Left)
+		this->pos.x-= 10;
+	else if (key == XK_Right)
+		this->pos.x+= 10;
+	else if (key == XK_Up)
+		this->pos.y-= 10;
+	else if (key == XK_Down)
+		this->pos.y+= 10;
+	else if (key == XK_w)
+		this->pos.fov += 0.1;
+	else if (key == XK_s)
+		this->pos.fov -= 0.1;
+	else
+		printf("key Press &> %i\n", key);
+	return (0);
 }

@@ -1,8 +1,7 @@
 #============ [FILES] ==========
 NAME = render
 
-FILES = main.c interface.c events.c pixel.c
-
+FILES = main.c interface.c events.c pixel.c background.c game_prop.c
 
 OBJS = $(addprefix $(BUILDS)/, $(FILES:.c=.o))
 
@@ -12,11 +11,10 @@ DEP = $(OBJS:.o=.d)
 
 #================= [DIRS] ===================
 SRCS = ./srcs
-VPATH = render events
+VPATH = render events gameWordSpace
 VPATH := $(SRCS) $(addprefix $(SRCS)/, $(VPATH))
 HEADER = ./includes
 HEADER := $(addprefix -I, $(HEADER))
-#LIBFTDIR = ./libs/libft/
 BUILDS = ./builds
 
 #=================== [CONFIG_COMP] ==========
@@ -40,7 +38,7 @@ MKD_MSG				= @printf "[\e[0;35m MKD \e[0m] "
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(BUILDS) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(HEADER)  $(LIBFT) -o $(NAME) -lXext -lX11 -lmlx
+	$(CC) $(CFLAGS) $(OBJS) $(HEADER)  $(LIBFT) -o $(NAME) -lmlx -lXext -lX11 
 
 clean:
 	$(DEL) $(BUILDS)
