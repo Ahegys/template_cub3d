@@ -32,7 +32,7 @@ typedef struct s_window
 	char		*win_name;
 	int			height;
 	int			width;
-	int			game_map[10][10];
+	double			game_map[10][10];
 	t_pos		pos;
 }	t_window;
 

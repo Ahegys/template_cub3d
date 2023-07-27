@@ -2,8 +2,8 @@
 
 void	setup(t_window *this)
 {
-	this->vec.pos = create_vector(5, 5);
-	this->vec.dir = create_vector(0, -1.5);
+	this->vec.pos = create_vector(5, 1);
+	this->vec.dir = create_vector(0, 1);
 	this->vec.plane = create_vector(0.66, 0);
 }
 

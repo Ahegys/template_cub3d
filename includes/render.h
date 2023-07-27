@@ -1,6 +1,8 @@
 # ifndef RENDER_H
 #define RENDER_H
 
+#define MAP_SIZE 10
+
 #include <X11/keysym.h>
 #include <mlx.h>
 #include <stdio.h>
@@ -9,7 +11,10 @@
 #include "./type_defs.h"
 #include <math.h>
 
+
+
 int			tracker();
+void	drawLine(t_window *this, double x1, double y1, double x2, double y2, int color);
 int			mouse_hook();
 void		setup(t_window *this);
 void		start(t_window *this);
