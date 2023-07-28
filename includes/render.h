@@ -11,10 +11,9 @@
 #include "./type_defs.h"
 #include <math.h>
 
-
-
 int			tracker();
-void	drawLine(t_window *this, double x1, double y1, double x2, double y2, int color);
+void		crosshair(t_window *this, int gap_size);
+void		drawLine(t_window *this, double x1, double y1, double x2, double y2, int color);
 int			mouse_hook();
 void		setup(t_window *this);
 void		start(t_window *this);

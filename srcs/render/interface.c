@@ -21,10 +21,10 @@ static void	event_caller(t_window *this)
 	this->img.img = mlx_new_image(this->mlx, this->width, this->height);
 	this->img.addr = mlx_get_data_addr(this->img.img, &this->img.bpp, &this->img.line_len, &this->img.endian);
 	setup(this);
+	mlx_hook(this->win, 2, 1L << 0, check_keys, this);
 	mlx_hook(this->win, 6, 1L << 6, tracker, this);
 	mlx_hook(this->win, 4, 1L << 2, &mouse_hook, this);
 	mlx_hook(this->win,  17 , 0, exitState, this);
-	mlx_hook(this->win, 2, 1L << 0, check_keys, this);
 	mlx_loop_hook(this->mlx, &loop, this);
 	mlx_loop(this->mlx);
 	mlx_pixel_put(this->mlx, this->win, 700, 550, 0xfffff);

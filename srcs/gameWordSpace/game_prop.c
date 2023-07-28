@@ -1,4 +1,5 @@
 #include "../includes/render.h"
+#include <math.h>
 
 t_vector	create_vector(double x, double y)
 {
@@ -13,6 +14,15 @@ t_vector vector_mult(t_vector v, double scalar)
 t_vector vector_add(t_vector v, t_vector scalar)
 {	
 	return ((t_vector){ v.x + scalar.x, v.y + scalar.y});
+}
+
+t_vector	rotate_vector(t_vector vector, double angle)
+{
+	double	rotate_x;
+	double	rotate_y;
+	rotate_x = vector.x * cos(angle) - vector.y * sin(angle);
+	rotate_y = vector.x * sin(angle) + vector.y * cos(angle);
+	return ((t_vector){rotate_x, rotate_y});
 }
 
 t_vector vector_copy(t_vector source) {
@@ -33,7 +43,7 @@ void drawLine(t_window *this, double x1, double y1, double x2, double y2, int co
 {
 	int dx = x2 - x1;
 	int dy = y2 - y1;
-	int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+	int steps = ft_abs(dx) > ft_abs(dy) ? ft_abs(dx) : ft_abs(dy);
 	float xIncrement = (float)dx / steps;
 	float yIncrement = (float)dy / steps;
 	float x = x1;
@@ -46,85 +56,91 @@ void drawLine(t_window *this, double x1, double y1, double x2, double y2, int co
 	}
 }
 
-void create_space_camera(t_window *this) {
-	int pixelg;
-	t_vector ray_dir;
-	double delta_dist_x;
-	double delta_dist_y;
-	t_vector map_pos;
-	int step_x;
-	int step_y;
-	double side_dist_x;
-	double side_dist_y;
-	int hit_side;
-	double perp_wall_dist;
+void	check_hit_map(t_math_map *self, t_vector *map_pos, t_vector *ray_dir, t_window *this)
+{
+		while (self->hit == 0)
+		{
+			if (self->sdist_x < self->sdist_y) {
+				self->sdist_x += self->ddist_x;
+				map_pos->x += self->stepx;
+				self->hit_side = 0;
+			}
+			else
+			{
+				self->sdist_y += self->ddist_y;
+				map_pos->y += self->stepy;
+				self->hit_side = 1;
+			}
 
-	pixelg = 0;
-	while (pixelg < this->width) {
-		double camera_x = 2.0 * pixelg / this->width - 1.0;
-		ray_dir = vector_add(this->vec.dir, vector_mult(this->vec.plane, camera_x));
+			if (this->game_map[(int)map_pos->x][(int)map_pos->y] == 1)
+				self->hit = 1;
+		}
+
+		if (self->hit_side == 0)
+			self->perpe_wall_dist = (map_pos->x - this->vec.pos.x + (1.0 - self->stepx) / 2.0) / ray_dir->x;
+		else
+			self->perpe_wall_dist = (map_pos->y - this->vec.pos.y + (1.0 - self->stepy) / 2.0) / ray_dir->y;
+
+		self->wall_line_height = this->height / self->perpe_wall_dist;
+		self->line_start_y = this->height / 2.0 - self->wall_line_height / 2.0;
+		self->line_end_y = this->height / 2.0 + self->wall_line_height / 2.0;
+
+		if (self->hit_side == 1)
+			self->color = 0xeb4034;
+		else
+			self->color = 0x540d15;
+		drawLine(this, self->pixelg, self->line_start_y, self->pixelg, self->line_end_y, self->color);
+}
+
+void create_space_camera(t_window *this) {
+	t_math_map	self;
+	t_vector ray_dir;
+	t_vector map_pos;
+
+	self.pixelg = 0;
+	while (self.pixelg < this->width) {
+		self.camera_x = 2.0 * self.pixelg / this->width - 1.0;
+		ray_dir = vector_add(this->vec.dir, vector_mult(this->vec.plane, self.camera_x));
 
 		map_pos = create_vector(floor(this->vec.pos.x), floor(this->vec.pos.y));
 
 		if (ray_dir.x == 0)
-			delta_dist_x = 0;
+			self.ddist_x = 0;
 		else
-			delta_dist_x = fabs(1.0 / ray_dir.x);
+			self.ddist_x = fabs(1.0 / ray_dir.x);
 
 		if (ray_dir.y == 0)
-			delta_dist_y = 0;
+			self.ddist_y = 0;
 		else
-			delta_dist_y = fabs(1.0 / ray_dir.y);
+			self.ddist_y = fabs(1.0 / ray_dir.y);
 
-		int hit = 0;
+		self.hit = 0;
 
-		if (ray_dir.x < 0) {
-			step_x = -1;
-			side_dist_x = (this->vec.pos.x - map_pos.x) * delta_dist_x;
-		} else {
-			step_x = 1;
-			side_dist_x = (map_pos.x + 1.0 - this->vec.pos.x) * delta_dist_x;
+		if (ray_dir.x < 0)
+		{
+			self.stepx = -1;
+			self.sdist_x = (this->vec.pos.x - map_pos.x) * self.ddist_x;
+		} 
+		else 
+		{
+			self.stepx = 1;
+			self.sdist_x = (map_pos.x + 1.0 - this->vec.pos.x) * self.ddist_x;
 		}
 
 		if (ray_dir.y < 0) {
-			step_y = -1;
-			side_dist_y = (this->vec.pos.y - map_pos.y) * delta_dist_y;
-		} else {
-			step_y = 1;
-			side_dist_y = (map_pos.y + 1.0 - this->vec.pos.y) * delta_dist_y;
+			self.stepy = -1;
+			self.sdist_y = (this->vec.pos.y - map_pos.y) * self.ddist_y;
+		} 
+		else
+		{
+			self.stepy = 1;
+			self.sdist_y = (map_pos.y + 1.0 - this->vec.pos.y) * self.ddist_y;
 		}
 
-		while (hit == 0) {
-			if (side_dist_x < side_dist_y) {
-				side_dist_x += delta_dist_x;
-				map_pos.x += step_x;
-				hit_side = 0;
-			} else {
-				side_dist_y += delta_dist_y;
-				map_pos.y += step_y;
-				hit_side = 1;
-			}
+		check_hit_map(&self, &map_pos, &ray_dir, this);
+		//double	rotate_speed = 0.0005;
 
-			if (this->game_map[(int)map_pos.x][(int)map_pos.y] > 0)
-				hit = 1;
-		}
-
-		if (hit_side == 0)
-			perp_wall_dist = (map_pos.x - this->vec.pos.x + (1.0 - step_x) / 2.0) / ray_dir.x;
-		else
-			perp_wall_dist = (map_pos.y - this->vec.pos.y + (1.0 - step_y) / 2.0) / ray_dir.y;
-
-		double wall_line_height = this->height / perp_wall_dist;
-		double line_start_y = this->height / 2.0 - wall_line_height / 2.0;
-		double line_end_y = this->height / 2.0 + wall_line_height / 2.0;
-
-		int color;
-		if (hit_side == 1)
-			color = 0xeb4034;
-		else
-			color = 0x540d15;
-		drawLine(this, pixelg, line_start_y, pixelg, line_end_y, color);
-
-		pixelg++;
+		//this->vec.dir = rotate_vector(this->vec.dir, (rotate_speed * M_PI) / 180);
+		self.pixelg++;
 	}
 }
