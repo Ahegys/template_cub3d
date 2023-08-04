@@ -26,7 +26,6 @@ int	main(int ac, char **av)
 		{1,1,1,1,1,1,1,1,1,1}
 	};
 
-	// Copiando o mapa criado para a struct
 	for (int i = 0; i < MAP_SIZE; i++) {
 		for (int j = 0; j < MAP_SIZE; j++) {
 			self.game_map[i][j] = game_map[i][j];
