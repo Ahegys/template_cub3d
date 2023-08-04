@@ -2,7 +2,7 @@
 
 void	setup(t_window *this)
 {
-	this->vec.pos = create_vector(5, 5);
+	this->vec.pos = create_vector(5, 8);
 	this->vec.dir = create_vector(0.1, 0.5);
 	this->vec.plane = create_vector(1, 0);
 }
@@ -40,30 +40,18 @@ int	check_keys(int key, t_window *this)
 	}
 	else if (key == XK_Left)
 	{
-		if (this->vec.pos.x < 2.8)
-			return (-1);
-		printf("pos.x: %f\n", this->vec.pos.x);
 		this->vec.pos.x-= 0.1;
 	}
 	else if (key == XK_Right)
 	{
-		if (this->vec.pos.x > 6.7)
-			return (-1);
-		printf("pos.x: %f\n", this->vec.pos.x);
 		this->vec.pos.x+= 0.1;
 	}
 	else if (key == XK_Up)
 	{
-		if (this->vec.pos.y < 3.2)
-			return (-1);
-		printf("pos.y: %f\n", this->vec.pos.y);
 		this->vec.pos.y+= 0.1;
 	}
 	else if (key == XK_Down)
 	{
-		if (this->vec.pos.y > 6.5)
-			return(-1);
-		printf("pos.y: %f\n", this->vec.pos.y);
 		this->vec.pos.y-= 0.1;
 	}
 	else if (key == XK_r)
