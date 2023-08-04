@@ -7,8 +7,8 @@ int	main(int ac, char **av)
 	(void)ac;
 	t_window self;
 
-	self.width = 800;
-	self.height = 600;
+	self.width = 1280;
+	self.height = 720;
 	self.pos.x = 5;
 	self.pos.y = 5;
 	self.pos.fov = 2;

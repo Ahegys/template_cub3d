@@ -60,7 +60,7 @@ void	check_hit_map(t_math_map *self, t_vector *map_pos, t_vector *ray_dir, t_win
 {
 		while (self->hit == 0)
 		{
-			if (self->sdist_x < self->sdist_y) {
+			if (self->sdist_x <= self->sdist_y) {
 				self->sdist_x += self->ddist_x;
 				map_pos->x += self->stepx;
 				self->hit_side = 0;
@@ -98,7 +98,7 @@ void create_space_camera(t_window *this) {
 	t_vector map_pos;
 
 	self.pixelg = 0;
-	while (self.pixelg < this->width) {
+	while (self.pixelg <= this->width) {
 		self.camera_x = 2.0 * self.pixelg / this->width - 1.0;
 		ray_dir = vector_add(this->vec.dir, vector_mult(this->vec.plane, self.camera_x));
 
@@ -107,12 +107,11 @@ void create_space_camera(t_window *this) {
 		if (ray_dir.x == 0)
 			self.ddist_x = 0;
 		else
-			self.ddist_x = fabs(1.0 / ray_dir.x);
-
+			self.ddist_x = fabs(1 /ray_dir.x);
 		if (ray_dir.y == 0)
 			self.ddist_y = 0;
 		else
-			self.ddist_y = fabs(1.0 / ray_dir.y);
+			self.ddist_y = fabs(1 / ray_dir.y);
 
 		self.hit = 0;
 
@@ -138,9 +137,8 @@ void create_space_camera(t_window *this) {
 		}
 
 		check_hit_map(&self, &map_pos, &ray_dir, this);
-		//double	rotate_speed = 0.0005;
 
-		//this->vec.dir = rotate_vector(this->vec.dir, (rotate_speed * M_PI) / 180);
+		this->vec.dir = (t_vector){0.1 , 0.5};
 		self.pixelg++;
 	}
 }

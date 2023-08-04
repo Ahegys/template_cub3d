@@ -4,7 +4,7 @@ void	setup(t_window *this)
 {
 	this->vec.pos = create_vector(5, 5);
 	this->vec.dir = create_vector(0, -1);
-	this->vec.plane = create_vector(0.66, 0);
+	this->vec.plane = create_vector(1, 0);
 }
 
 int	loop(t_window *this)
@@ -57,14 +57,14 @@ int	check_keys(int key, t_window *this)
 		if (this->vec.pos.y < 3.2)
 			return (-1);
 		printf("pos.y: %f\n", this->vec.pos.y);
-		this->vec.pos.y-= 0.1;
+		this->vec.pos.y+= 0.1;
 	}
 	else if (key == XK_Down)
 	{
 		if (this->vec.pos.y > 6.5)
 			return(-1);
 		printf("pos.y: %f\n", this->vec.pos.y);
-		this->vec.pos.y+= 0.1;
+		this->vec.pos.y-= 0.1;
 	}
 	else
 		printf("key Press &> %i\n", key);

@@ -64,29 +64,27 @@ void	render_floor(t_window *this)
 }
 
 void	crosshair(t_window *this, int gap_size)
-{
-	 // Define o comprimento dos braços da crosshair
-    int crosshairLength = 10;
+{	
+	int crosshair_length;
+	int crosshair_color;
+	
+	crosshair_length= 10;
+	crosshair_color = 0x73de10;
+
+	drawLine(this, this->width / 2 - crosshair_length, this->height / 2,
+					this->width / 2 - gap_size, this->height / 2,
+					crosshair_color);
 
 
-    int crosshairColor = 0x73de10;
+	drawLine(this, this->width / 2 + gap_size, this->height / 2,
+					this->width / 2 + crosshair_length, this->height / 2,
+					crosshair_color);
 
-    // Desenha a linha horizontal superior
-    drawLine(this, this->width / 2 - crosshairLength, this->height / 2,
-                      this->width / 2 - gap_size, this->height / 2,
-                      crosshairColor);
 
-    // Desenha a linha horizontal inferior
-    drawLine(this, this->width / 2 + gap_size, this->height / 2,
-                      this->width / 2 + crosshairLength, this->height / 2,
-                      crosshairColor);
-
-    // Desenha a linha vertical esquerda
-    drawLine(this, this->width / 2, this->height / 2 - crosshairLength,
-                      this->width / 2, this->height / 2 - gap_size,
-                      crosshairColor);
-    drawLine(this, this->width / 2, this->height / 2 + gap_size,
-                      this->width / 2, this->height / 2 + crosshairLength,
-                      crosshairColor);
+	drawLine(this, this->width / 2, this->height / 2 - crosshair_length,
+					this->width / 2, this->height / 2 - gap_size,
+					crosshair_color);
+	drawLine(this, this->width / 2, this->height / 2 + gap_size,
+					this->width / 2, this->height / 2 + crosshair_length,
+					crosshair_color);
 }
-
