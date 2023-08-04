@@ -16,13 +16,20 @@ t_vector vector_add(t_vector v, t_vector scalar)
 	return ((t_vector){ v.x + scalar.x, v.y + scalar.y});
 }
 
-t_vector	rotate_vector(t_vector vector, double angle)
+t_vector rotate_vector(t_vector vec, double angle) {
+	t_vector result;
+	result.x = vec.x * cos(angle) - vec.y * sin(angle);
+	result.y = vec.x * sin(angle) + vec.y * cos(angle);
+	return result;
+}
+
+void rotate_camera(t_window *camera, double angle)
 {
-	double	rotate_x;
-	double	rotate_y;
-	rotate_x = vector.x * cos(angle) - vector.y * sin(angle);
-	rotate_y = vector.x * sin(angle) + vector.y * cos(angle);
-	return ((t_vector){rotate_x, rotate_y});
+	t_vector new_dir = rotate_vector(camera->vec.dir, angle);
+	t_vector new_plane = rotate_vector(camera->vec.plane, angle);
+
+	camera->vec.dir = new_dir;
+	camera->vec.dir = new_plane;
 }
 
 t_vector vector_copy(t_vector source) {
@@ -138,7 +145,7 @@ void create_space_camera(t_window *this) {
 
 		check_hit_map(&self, &map_pos, &ray_dir, this);
 
-		this->vec.dir = (t_vector){0.1 , 0.5};
+		//this->vec.dir = rotate_vector(this->vec.dir, 0.00001 / 3.14);
 		self.pixelg++;
 	}
 }
