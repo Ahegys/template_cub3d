@@ -21,7 +21,7 @@ int			loop(t_window *this);
 void		create_space_camera(t_window *this);
 t_vector	create_vector(double x, double y);
 t_vector	rotate_vector(t_vector vector, double angle);
-void		rotate_camera(t_window *camera, double angle);
+void		rotate_camera(t_window *this, double angle);
 void		render_floor(t_window *this);
 void		pixel(t_window *this, int x, int y, int color);
 int			check_keys(int key, t_window *this);

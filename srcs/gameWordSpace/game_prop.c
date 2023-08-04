@@ -23,13 +23,21 @@ t_vector rotate_vector(t_vector vec, double angle) {
 	return result;
 }
 
-void rotate_camera(t_window *camera, double angle)
+void rotate_camera(t_window *this, double angle)
 {
-	t_vector new_dir = rotate_vector(camera->vec.dir, angle);
-	t_vector new_plane = rotate_vector(camera->vec.plane, angle);
+	double cos_angle = cos(angle);
+	double sin_angle = sin(angle);
+	double new_dir_x = this->vec.dir.x * cos_angle - this->vec.dir.y * sin_angle;
+	double new_dir_y = this->vec.dir.x * sin_angle + this->vec.dir.y * cos_angle;
 
-	camera->vec.dir = new_dir;
-	camera->vec.dir = new_plane;
+	double new_plane_x = this->vec.plane.x * cos_angle - this->vec.plane.y * sin_angle;
+	double new_plane_y = this->vec.plane.x * sin_angle + this->vec.plane.y * cos_angle;
+
+	this->vec.dir.x = new_dir_x;
+	this->vec.dir.y = new_dir_y;
+
+	this->vec.plane.x = new_plane_x;
+	this->vec.plane.y = new_plane_y;
 }
 
 t_vector vector_copy(t_vector source) {

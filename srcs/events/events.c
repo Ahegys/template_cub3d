@@ -68,21 +68,11 @@ int	check_keys(int key, t_window *this)
 	}
 	else if (key == XK_r)
 	{
-		double angle = 0.5;
-
-		double cos_angle = cos(angle);
-		double sin_angle = sin(angle);
-		double new_dir_x = this->vec.dir.x * cos_angle - this->vec.dir.y * sin_angle;
-		double new_dir_y = this->vec.dir.x * sin_angle + this->vec.dir.y * cos_angle;
-
-		double new_plane_x = this->vec.plane.x * cos_angle - this->vec.plane.y * sin_angle;
-		double new_plane_y = this->vec.plane.x * sin_angle + this->vec.plane.y * cos_angle;
-
-		this->vec.dir.x = new_dir_x;
-		this->vec.dir.y = new_dir_y;
-
-		this->vec.plane.x = new_plane_x;
-		this->vec.plane.y = new_plane_y;
+		rotate_camera(this,-0.1);
+	}
+	else if (key == XK_e)
+	{
+		rotate_camera(this, 0.1);
 	}
 	else
 		printf("key Press &> %i\n", key);
